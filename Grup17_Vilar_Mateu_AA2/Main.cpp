@@ -12,7 +12,7 @@ int main() {
 	Keys key;
 	bool endGame = false;
 	int speed = 400;
-	bool right, left, up, down;
+	bool right, left, up, down, escape;
 
 	//Inicialitzar mapa
 	map.ReadMap();
@@ -26,14 +26,14 @@ int main() {
 
 	//Game Loop
 	while (!endGame) {
-		key.GetKeys(right, left, up, down);
+		key.GetKeys(right, left, up, down, escape);
 		player.MovePlayer(right, left, up, down, map.map, map.totalColumns, map.totalRows);
 		map.ActualizeMap(player.pos, player.initialPos, player.character);
-		std::cout << "\n Score: " << player.score << '/' << map.maxPoints;
+		std::cout << "\n Score: " << player.score;
 		Sleep(speed);
 		system("cls");
 
-		if (map.maxPoints == player.score) {
+		if (map.maxPoints == player.score || escape) {
 			endGame = true;
 
 		}
