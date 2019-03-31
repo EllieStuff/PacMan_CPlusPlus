@@ -11,6 +11,7 @@ struct Map {
 	char** map;
 	int sizeX = 0;
 	int sizeY = 0;
+	int maxPoints = 0;
 
 	void ReadMap();
 

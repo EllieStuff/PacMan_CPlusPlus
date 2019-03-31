@@ -24,6 +24,11 @@ void Map::ReadMap() {
 			while (sizeY < totalColumns) {
 				config >> std::noskipws >> map[sizeX][sizeY];
 
+				if (map[sizeX][sizeY] == '*') {
+					maxPoints++;
+
+				}
+
 				sizeY++;
 			}
 			sizeY = 0;

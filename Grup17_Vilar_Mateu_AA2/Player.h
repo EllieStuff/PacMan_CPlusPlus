@@ -11,11 +11,13 @@ struct Player {
 	Position initialPos;
 	int columns;
 	int rows;
-	int score;
+	int score = 0;
 	char character;
 
 	void InitializePlayer(int totalRows, int totalColumns, char** map);
 
 	void MovePlayer(bool right, bool left, bool up, bool down, char** map, int columns, int rows);
+
+	void CalculateScore(char** map);
 
 };

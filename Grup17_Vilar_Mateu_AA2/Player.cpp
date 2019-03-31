@@ -73,6 +73,7 @@ void Player::MovePlayer(bool right, bool left, bool up, bool down, char** map, i
 		}
 		else {
 			pos.y++;
+			CalculateScore(map);
 
 		}
 
@@ -90,6 +91,7 @@ void Player::MovePlayer(bool right, bool left, bool up, bool down, char** map, i
 		}
 		else {
 			pos.y--;
+			CalculateScore(map);
 
 		}
 
@@ -108,6 +110,7 @@ void Player::MovePlayer(bool right, bool left, bool up, bool down, char** map, i
 		}
 		else {
 			pos.x--;
+			CalculateScore(map);
 
 		}
 
@@ -125,10 +128,19 @@ void Player::MovePlayer(bool right, bool left, bool up, bool down, char** map, i
 		}
 		else {
 			pos.x++;
+			CalculateScore(map);
 
 		}
 
 		character = '^';
+
+	}
+
+}
+
+void Player::CalculateScore(char** map) {
+	if (map[pos.x][pos.y] == '*') {
+		score++;
 
 	}
 
