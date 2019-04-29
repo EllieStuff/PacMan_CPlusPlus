@@ -5,12 +5,15 @@
 #include <iostream>
 #include "Types.h"
 
-struct Map {
+class Map {
+private:
+	int sizeX = 0;
+	int sizeY = 0;
+
+public:
 	int totalRows;
 	int totalColumns;
 	char** map;
-	int sizeX = 0;
-	int sizeY = 0;
 	int maxPoints = 0;
 
 	void ReadMap();

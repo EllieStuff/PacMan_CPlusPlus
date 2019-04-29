@@ -6,11 +6,14 @@
 #include "Types.h"
 #include "Windows.h"
 
-struct Player {
-	Position pos;
-	Position initialPos;
+class Player {
+private:
 	int columns;
 	int rows;
+
+public:
+	Position pos;
+	Position initialPos;
 	int score = 0;
 	char character;
 

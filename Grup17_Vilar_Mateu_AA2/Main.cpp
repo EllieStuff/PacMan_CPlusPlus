@@ -11,8 +11,9 @@ int main() {
 	Player player;
 	Keys key;
 	bool endGame = false;
+	bool pause = false;
 	int speed = 400;
-	bool right, left, up, down, escape;
+	bool right, left, up, down, escape, startPause, quitPause;
 
 	//Inicialitzar mapa
 	map.ReadMap();
@@ -26,13 +27,32 @@ int main() {
 
 	//Game Loop
 	while (!endGame) {
-		key.GetKeys(right, left, up, down, escape);
+		//Actualitzar mapa
+		key.GetKeys(right, left, up, down, escape, startPause, quitPause);
 		player.MovePlayer(right, left, up, down, map.map, map.totalColumns, map.totalRows);
 		map.ActualizeMap(player.pos, player.initialPos, player.character);
-		std::cout << "\n Score: " << player.score;
+		std::cout << "\n Score: " << player.score << std::endl;
+
+		//Pausar el joc
+		if (startPause) {
+			pause = true;
+			std::cout << " Press space to continue...";
+
+		}
+		while (pause) {
+			key.GetKeys(right, left, up, down, escape, startPause, quitPause);
+			if (quitPause || escape) {
+				pause = false;
+
+			}
+
+		}
+
+		//Esperar i borrar mapa anterior
 		Sleep(speed);
 		system("cls");
 
+		//Sortir del joc
 		if (map.maxPoints == player.score || escape) {
 			endGame = true;
 
@@ -40,5 +60,5 @@ int main() {
 
 	}
 
-	return 0;
+	//return 0;
 }
