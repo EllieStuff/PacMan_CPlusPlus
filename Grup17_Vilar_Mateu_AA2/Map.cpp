@@ -47,9 +47,9 @@ void Map::ReadMap() {
 
 }
 
-void Map::WriteMap(Position &pos) {
+void Map::WriteMap(Position &playerPos) {
 	//Assignar posició del jugador en la array map
-	map[pos.x][pos.y] = '>';
+	map[playerPos.x][playerPos.y] = '>';
 
 	//Escriure mapa
 	for (int i = 0; i < totalRows; i++) {
@@ -64,14 +64,14 @@ void Map::WriteMap(Position &pos) {
 
 }
 
-void Map::ActualizeMap(Position &pos, Position &lastPos, char &character) {
+void Map::ActualizeMap(Position &playerPos, Position &lastPos, char &character) {
 	system("cls");
 	map[lastPos.x][lastPos.y] = ' ';
-	if (map[pos.x][pos.y] == 'X') {
-		pos = lastPos;
+	if (map[playerPos.x][playerPos.y] == 'X') {
+		playerPos = lastPos;
 
 	}
-	map[pos.x][pos.y] = character;
+	map[playerPos.x][playerPos.y] = character;
 
 	//Escriure mapa
 	for (int i = 0; i < totalRows; i++) {

@@ -7,6 +7,20 @@ void Player::InitializePlayer(int totalRows, int totalColumns, char** map) {
 	//part inferior del mapa de forma centrica. En cas que no pugui, anirà buscant una posició vàlida per tot el
 	//mapa i, de no trobar-la, enviarà un error de que no existeix una posició vàlida per a assignar al jugador.
 	character = '>';
+	for (int i = 0; i < totalRows; i++) {
+		for (int j = 0; j < totalColumns; j++) {
+			if (map[i][j] == '>') {
+				pos.x = i;
+				pos.y = j;
+				initialPos = pos;
+				return;
+
+			}
+
+		}
+
+	}
+
 	int possibleWays = 0;
 	bool validPoint = false;
 	pos.x = 2 * totalRows / 3;
@@ -31,7 +45,7 @@ void Player::InitializePlayer(int totalRows, int totalColumns, char** map) {
 
 		}
 
-		if (possibleWays > 1 && (map[pos.x][pos.y] == '*' || map[pos.x][pos.y] == ' ')) {
+		if (possibleWays > 1 && (map[pos.x][pos.y] == '*' || map[pos.x][pos.y] == ' ') && map[pos.x][pos.y] != '#' && map[pos.x][pos.y] != '&' && map[pos.x][pos.y] != '$') {
 			validPoint = true;
 
 		}
@@ -49,7 +63,7 @@ void Player::InitializePlayer(int totalRows, int totalColumns, char** map) {
 
 			}
 			else if (pos.x == initialPos.x && pos.y == initialPos.y) {
-				std::cout << "\nERROR, THERE IS NO VALID START POINT.\nPLEASE, CREATE A VALID START POINT.";
+				//std::cout << "\nERROR, THERE IS NO VALID START POINT.\nPLEASE, CREATE A VALID START POINT.";
 				break;
 
 			}

@@ -8,8 +8,8 @@
 
 class Player {
 private:
-	int columns;
-	int rows;
+	//int columns;
+	//int rows;
 
 public:
 	Position pos;

@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "Types.h"
+#include "Enemies.h"
 //#include "Types.h"
 //#include "Constants.h"
 
@@ -10,6 +11,7 @@ int main() {
 	Map map;
 	Player player;
 	Keys key;
+	Enemy enemy;
 	bool endGame = false;
 	bool pause = false;
 	int speed = 400;
@@ -17,6 +19,7 @@ int main() {
 
 	//Inicialitzar mapa
 	map.ReadMap();
+	enemy.SearchEnemies(map.map, map.totalRows, map.totalColumns);
 
 	//Inicialitzar jugador
 	player.InitializePlayer(map.totalRows, map.totalColumns, map.map);
@@ -30,6 +33,7 @@ int main() {
 		//Actualitzar mapa
 		key.GetKeys(right, left, up, down, escape, startPause, quitPause);
 		player.MovePlayer(right, left, up, down, map.map, map.totalColumns, map.totalRows);
+		enemy.MoveEnemies(map.map);
 		map.ActualizeMap(player.pos, player.initialPos, player.character);
 		std::cout << "\n Score: " << player.score << std::endl;
 
