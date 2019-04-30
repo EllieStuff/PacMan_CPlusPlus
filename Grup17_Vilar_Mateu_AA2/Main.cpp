@@ -63,11 +63,6 @@ int main() {
 
 		}
 
-		if (player.lives < 1 || map.maxPoints == player.score) {
-			gameOver = true;
-
-		}
-
 		//Actualitzar mapa
 		key.GetKeys(right, left, up, down, escape, startPause, quitPause);
 		player.MovePlayer(right, left, up, down, map.map, map.totalColumns, map.totalRows);
@@ -93,6 +88,10 @@ int main() {
 				gameOver = false;
 
 			}
+
+		}
+		if (player.lives < 1 || map.maxPoints == player.score) {
+			gameOver = true;
 
 		}
 
