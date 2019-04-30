@@ -5,10 +5,13 @@
 
 class Enemy {
 private:
-	//enum enemyType { BLINKY, INKY, CLYDE };
 	void Resize(int newSize);
 
-	void DecideBlinkyPosition(char** map, int i);
+	void MoveBlinky(char** map, int i);
+
+	void MoveInky(char** map, int i, bool right, bool left, bool up, bool down);
+
+	void MoveClyde(char** map, int i, bool right, bool left, bool up, bool down);
 
 public:
 	int id;
@@ -23,6 +26,6 @@ public:
 
 	void SearchEnemies(char** map, int maxRows, int maxColumns);
 
-	void MoveEnemies(char** map);
+	void MoveEnemies(char** map, bool right, bool left, bool up, bool down);
 
 };

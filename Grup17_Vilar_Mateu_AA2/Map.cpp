@@ -20,28 +20,23 @@ void Map::ReadMap() {
 		}
 		config >> std::noskipws >> map[sizeX][sizeY];
 
-		while (sizeX < totalRows) {
-			while (sizeY < totalColumns) {
-				config >> std::noskipws >> map[sizeX][sizeY];
+		for (int i = 0; i < totalRows; i++) {
+			for (int j = 0; j < totalColumns; j++) {
+				config >> std::noskipws >> map[i][j];
 
-				if (map[sizeX][sizeY] == '*') {
+				if (map[i][j] == '*') {
 					maxPoints++;
 
 				}
 
-				sizeY++;
 			}
-			sizeY = 0;
-
-			sizeX++;
-			//config >> std::noskipws >> map[sizeX][sizeY];
 			config >> heap;
 
 		}
 
 	}
 	else
-		std::cout << "I AM ERROR";
+		return;
 
 	config.close();
 

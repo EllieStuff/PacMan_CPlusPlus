@@ -49,20 +49,22 @@ void Enemy::SearchEnemies(char ** map, int maxRows, int maxColumns)
 
 }
 
-void Enemy::MoveEnemies(char ** map)
+void Enemy::MoveEnemies(char ** map, bool right, bool left, bool up, bool down)
 {
 	for (int i = 0; i < enemyNumber; i++) {
 		switch (enemyList[i].id) {
 		case 0:	//El Blinky es mou de forma random, però mai cap endarrere
-			DecideBlinkyPosition(map, i);
+			MoveBlinky(map, i);
 
 			break;
 
 		case 1: //El Inky es mou seguint els Inputs del teclat
+			MoveInky(map, i, right, left, up, down);
 
 			break;
 
 		case 2: //El Clyde es mou seguint l'inversa dels Inputs del teclat
+			MoveClyde(map, i, right, left, up, down);
 
 			break;
 
@@ -76,7 +78,7 @@ void Enemy::MoveEnemies(char ** map)
 
 }
 
-void Enemy::DecideBlinkyPosition(char ** map, int i)
+void Enemy::MoveBlinky(char ** map, int i)
 {
 	int random = rand() % 3;
 	bool canMove = false;
@@ -467,6 +469,84 @@ void Enemy::DecideBlinkyPosition(char ** map, int i)
 			}
 
 		}
+
+	}
+
+}
+
+void Enemy::MoveInky(char ** map, int i, bool right, bool left, bool up, bool down)
+{
+	if (enemyList[i].overlapSymbol == '<' || enemyList[i].overlapSymbol == '>' || enemyList[i].overlapSymbol == 'v' || enemyList[i].overlapSymbol == '^') {
+		enemyList[i].overlapSave = ' ';
+
+	}
+	else {
+		enemyList[i].overlapSave = enemyList[i].overlapSymbol;
+
+	}
+
+	if (right && map[enemyList[i].pos.x][enemyList[i].pos.y + 1] != (char)219) {
+		enemyList[i].initialPos = enemyList[i].pos;
+		enemyList[i].pos.y++;
+
+	}
+	else if (left && map[enemyList[i].pos.x][enemyList[i].pos.y - 1] != (char)219) {
+		enemyList[i].initialPos = enemyList[i].pos;
+		enemyList[i].pos.y--;
+
+	}
+	else if (up && map[enemyList[i].pos.x - 1][enemyList[i].pos.y] != (char)219) {
+		enemyList[i].initialPos = enemyList[i].pos;
+		enemyList[i].pos.x--;
+
+	}
+	else if (down && map[enemyList[i].pos.x + 1][enemyList[i].pos.y] != (char)219) {
+		enemyList[i].initialPos = enemyList[i].pos;
+		enemyList[i].pos.x++;
+
+	}
+
+	if (map[enemyList[i].pos.x][enemyList[i].pos.y] != '&') {
+		enemyList[i].overlapSymbol = map[enemyList[i].pos.x][enemyList[i].pos.y];
+
+	}
+
+}
+
+void Enemy::MoveClyde(char ** map, int i, bool right, bool left, bool up, bool down)
+{
+	if (enemyList[i].overlapSymbol == '<' || enemyList[i].overlapSymbol == '>' || enemyList[i].overlapSymbol == 'v' || enemyList[i].overlapSymbol == '^') {
+		enemyList[i].overlapSave = ' ';
+
+	}
+	else {
+		enemyList[i].overlapSave = enemyList[i].overlapSymbol;
+
+	}
+
+	if (right && map[enemyList[i].pos.x][enemyList[i].pos.y - 1] != (char)219) {
+		enemyList[i].initialPos = enemyList[i].pos;
+		enemyList[i].pos.y--;
+
+	}
+	else if (left && map[enemyList[i].pos.x][enemyList[i].pos.y + 1] != (char)219) {
+		enemyList[i].initialPos = enemyList[i].pos;
+		enemyList[i].pos.y++;
+
+	}
+	else if (up && map[enemyList[i].pos.x + 1][enemyList[i].pos.y] != (char)219) {
+		enemyList[i].initialPos = enemyList[i].pos;
+		enemyList[i].pos.x++;
+
+	}
+	else if (down && map[enemyList[i].pos.x - 1][enemyList[i].pos.y] != (char)219) {
+		enemyList[i].initialPos = enemyList[i].pos;
+		enemyList[i].pos.x--;
+
+	}
+
+	if (map[enemyList[i].pos.x][enemyList[i].pos.y] != '$') {
+		enemyList[i].overlapSymbol = map[enemyList[i].pos.x][enemyList[i].pos.y];
 
 	}
 

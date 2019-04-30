@@ -3,9 +3,10 @@
 #include "Player.h"
 
 void Player::InitializePlayer(int totalRows, int totalColumns, char** map) {
-	//Mira si la posició inicial del jugador està en un punt en que es pugui moure en almenys dos direccions en la 
-	//part inferior del mapa de forma centrica. En cas que no pugui, anirà buscant una posició vàlida per tot el
-	//mapa i, de no trobar-la, enviarà un error de que no existeix una posició vàlida per a assignar al jugador.
+	//Primer mira si troba un jugador en el taulell i, en cas de fer-ho, assigna les dades alla on es trobi. En cas contrari, 
+	//mira si la posició inicial del jugador està en un punt en que es pugui moure en almenys dos direccions en la part
+	//inferior del mapa de forma centrica. En cas que no pugui, anirà buscant una posició vàlida per tot el mapa i, de no 
+	//trobar-la, enviarà un error de que no existeix una posició vàlida per a assignar al jugador.
 	character = '>';
 	for (int i = 0; i < totalRows; i++) {
 		for (int j = 0; j < totalColumns; j++) {
@@ -63,9 +64,8 @@ void Player::InitializePlayer(int totalRows, int totalColumns, char** map) {
 
 			}
 			else if (pos.x == initialPos.x && pos.y == initialPos.y) {
-				//std::cout << "\nERROR, THERE IS NO VALID START POINT.\nPLEASE, CREATE A VALID START POINT.";
-				break;
 
+				return;
 			}
 		}
 	}
@@ -169,5 +169,15 @@ void Player::CalculateHealth(Enemy enemyList[], int enemyNum)
 		}
 
 	}
+
+	HANDLE consoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+	std::cout << "		LIVES: ";
+	SetConsoleTextAttribute(consoleColor, 6);
+	for (int i = 0; i < lives; i++) {
+		std::cout << (char)219 << ' ';
+
+	}
+	std::cout << std::endl;
+	SetConsoleTextAttribute(consoleColor, 7);
 
 }
