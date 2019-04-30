@@ -5,8 +5,18 @@
 #include "Windows.h"
 
 struct Position {
+public:
 	int x;
 	int y;
+
+	bool Equal(Position otherPos) {
+		if (x == otherPos.x && y == otherPos.y) {
+
+			return true;
+		}
+
+		return false;
+	}
 
 };
 

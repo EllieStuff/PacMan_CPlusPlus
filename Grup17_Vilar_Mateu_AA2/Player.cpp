@@ -77,11 +77,11 @@ void Player::MovePlayer(bool right, bool left, bool up, bool down, char** map, i
 
 	//Actualitza la posició del jugador
 	if (right) {
-		if (pos.y == columns - 1 && map[pos.x][0] != 'X') {
+		if (pos.y == columns - 1 && map[pos.x][0] != (char)219) {
 			pos.y = 0;
 
 		}
-		else if (pos.y == columns - 1 && map[pos.x][0] == 'X') {
+		else if (pos.y == columns - 1 && map[pos.x][0] == (char)219) {
 			//En aquest cas no vull que faci res
 
 		}
@@ -95,11 +95,11 @@ void Player::MovePlayer(bool right, bool left, bool up, bool down, char** map, i
 
 	}
 	else if (left) {
-		if (pos.y == 0 && map[pos.x][columns - 1] != 'X') {
+		if (pos.y == 0 && map[pos.x][columns - 1] != (char)219) {
 			pos.y = columns - 1;
 
 		}
-		else if (pos.y == 0 && map[pos.x][columns - 1] == 'X') {
+		else if (pos.y == 0 && map[pos.x][columns - 1] == (char)219) {
 			//En aquest cas no vull que faci res
 
 		}
@@ -114,11 +114,11 @@ void Player::MovePlayer(bool right, bool left, bool up, bool down, char** map, i
 
 	}
 	else if (up) {
-		if (pos.x == rows - 1 && map[0][pos.y] != 'X') {
+		if (pos.x == rows - 1 && map[0][pos.y] != (char)219) {
 			pos.x = 0;
 
 		}
-		else if (pos.x == rows - 1 && map[0][pos.y] == 'X') {
+		else if (pos.x == rows - 1 && map[0][pos.y] == (char)219) {
 			//En aquest cas no vull que faci res
 
 		}
@@ -132,11 +132,11 @@ void Player::MovePlayer(bool right, bool left, bool up, bool down, char** map, i
 
 	}
 	else if (down) {
-		if (pos.x == 0 && map[rows - 1][pos.y] != 'X') {
+		if (pos.x == 0 && map[rows - 1][pos.y] != (char)219) {
 			pos.x = 0;
 
 		}
-		else if (pos.x == 0 && map[rows - 1][pos.y] == 'X') {
+		else if (pos.x == 0 && map[rows - 1][pos.y] == (char)219) {
 			//En aquest cas no vull que faci res
 
 		}
@@ -155,6 +155,18 @@ void Player::MovePlayer(bool right, bool left, bool up, bool down, char** map, i
 void Player::CalculateScore(char** map) {
 	if (map[pos.x][pos.y] == '*') {
 		score++;
+
+	}
+
+}
+
+void Player::CalculateHealth(Enemy enemyList[], int enemyNum)
+{
+	for (int i = 0; i < enemyNum; i++) {
+		if (enemyList[i].pos.Equal(pos) || (enemyList[i].initialPos.Equal(pos) && enemyList[i].pos.Equal(initialPos))) {
+			lives--;
+
+		}
 
 	}
 

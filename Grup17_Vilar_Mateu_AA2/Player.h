@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include "Types.h"
+#include "Enemies.h"
 #include "Windows.h"
 
 class Player {
@@ -14,6 +15,7 @@ private:
 public:
 	Position pos;
 	Position initialPos;
+	int lives = 3;
 	int score = 0;
 	char character;
 
@@ -22,5 +24,7 @@ public:
 	void MovePlayer(bool right, bool left, bool up, bool down, char** map, int columns, int rows);
 
 	void CalculateScore(char** map);
+
+	void CalculateHealth(Enemy enemyList[], int enemyNum);
 
 };

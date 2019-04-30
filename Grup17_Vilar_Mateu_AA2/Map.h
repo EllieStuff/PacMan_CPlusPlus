@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include "Types.h"
+#include "Enemies.h"
 
 class Map {
 private:
@@ -20,6 +21,6 @@ public:
 
 	void WriteMap(Position &pos);
 
-	void ActualizeMap(Position &pos, Position &lastPos, char &character);
+	void ActualizeMap(Position &pos, Position &lastPos, char &character, Enemy enemyList[], const int &enemyNum);
 
 };

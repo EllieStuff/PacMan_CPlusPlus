@@ -52,35 +52,128 @@ void Map::WriteMap(Position &playerPos) {
 	map[playerPos.x][playerPos.y] = '>';
 
 	//Escriure mapa
+	HANDLE consoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
 	for (int i = 0; i < totalRows; i++) {
 		for (int j = 0; j < totalColumns; j++) {
-			std::cout << ' ' << map[i][j];
+			if (map[i][j] == '>' || map[i][j] == '0') {
+				SetConsoleTextAttribute(consoleColor, 6);
+
+			}
+			else if (map[i][j] == '#') {
+				SetConsoleTextAttribute(consoleColor, 4);
+
+			}
+			else if (map[i][j] == '&') {
+				SetConsoleTextAttribute(consoleColor, 5);
+
+			}
+			else if (map[i][j] == '$') {
+				SetConsoleTextAttribute(consoleColor, 2);
+
+			}
+			else if (map[i][j] == 'X') {
+				map[i][j] = (char)219;
+				SetConsoleTextAttribute(consoleColor, 1);
+
+			}
+			else {
+				SetConsoleTextAttribute(consoleColor, 7);
+
+			}
+
+			if (map[i][j] == (char)219) {
+				std::cout << (char)219 << map[i][j];
+
+			}
+			else {
+				std::cout << ' ' << map[i][j];
+
+			}
 
 		}
-		std::cout << '\n';
+		std::cout << std::endl;
 
 	}
-
+	SetConsoleTextAttribute(consoleColor, 7);
 
 }
 
-void Map::ActualizeMap(Position &playerPos, Position &lastPos, char &character) {
-	system("cls");
+void Map::ActualizeMap(Position &playerPos, Position &lastPos, char &character, Enemy enemyList[], const int &enemyNum) {
 	map[lastPos.x][lastPos.y] = ' ';
-	if (map[playerPos.x][playerPos.y] == 'X') {
+	if (map[playerPos.x][playerPos.y] == (char)219) {
 		playerPos = lastPos;
 
 	}
 	map[playerPos.x][playerPos.y] = character;
 
-	//Escriure mapa
-	for (int i = 0; i < totalRows; i++) {
-		for (int j = 0; j < totalColumns; j++) {
-			std::cout << ' ' << map[i][j];
+	for (int i = 0; i < enemyNum; i++) {
+		map[enemyList[i].initialPos.x][enemyList[i].initialPos.y] = enemyList[i].overlapSave;
+
+		switch (enemyList[i].id) {
+		case 0:
+			map[enemyList[i].pos.x][enemyList[i].pos.y] = '#';
+
+			break;
+
+		case 1:
+			map[enemyList[i].pos.x][enemyList[i].pos.y] = '&';
+
+			break;
+
+		case 2:
+			map[enemyList[i].pos.x][enemyList[i].pos.y] = '$';
+
+			break;
+
+		default:
+			break;
 
 		}
-		std::cout << '\n';
 
 	}
+
+	//Escriure mapa
+	HANDLE consoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+	for (int i = 0; i < totalRows; i++) {
+		for (int j = 0; j < totalColumns; j++) {
+			if (map[i][j] == '<' || map[i][j] == '>' || map[i][j] == 'v' || map[i][j] == '^' || map[i][j] == '0') {
+				SetConsoleTextAttribute(consoleColor, 6);
+
+			}
+			else if (map[i][j] == '#') {
+				SetConsoleTextAttribute(consoleColor, 4);
+
+			}
+			else if (map[i][j] == '&') {
+				SetConsoleTextAttribute(consoleColor, 5);
+
+			}
+			else if (map[i][j] == '$') {
+				SetConsoleTextAttribute(consoleColor, 2);
+
+			}
+			else if (map[i][j] == (char)219) {
+				SetConsoleTextAttribute(consoleColor, 1);
+
+			}
+			else {
+				SetConsoleTextAttribute(consoleColor, 7);
+
+			}
+			
+			if (map[i][j] == (char)219) {
+				std::cout << (char)219 << map[i][j];
+
+			}
+			else {
+				std::cout << ' ' << map[i][j];
+
+			}
+
+		}
+		std::cout << std::endl;
+
+	}
+	SetConsoleTextAttribute(consoleColor, 7);
 
 }
