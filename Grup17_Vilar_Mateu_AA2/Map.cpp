@@ -24,10 +24,7 @@ void Map::ReadMap() {
 			for (int j = 0; j < totalColumns; j++) {
 				config >> std::noskipws >> map[i][j];
 
-				if (map[i][j] == '*') {
-					maxPoints++;
-
-				}
+				if (map[i][j] == '*') maxPoints++;
 
 			}
 			config >> heap;
@@ -68,6 +65,10 @@ void Map::WriteMap(Position &playerPos) {
 			}
 			else if (map[i][j] == 'X') {
 				map[i][j] = (char)219;
+				SetConsoleTextAttribute(consoleColor, 1);
+
+			}
+			else if (map[i][j] == (char)219) {
 				SetConsoleTextAttribute(consoleColor, 1);
 
 			}
@@ -170,5 +171,43 @@ void Map::ActualizeMap(Position &playerPos, Position &lastPos, char &character, 
 
 	}
 	SetConsoleTextAttribute(consoleColor, 7);
+
+}
+
+void Map::WriteSplashScreen(std::string sceneString)
+{
+	HANDLE consoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+	std::cout << "\n\n\n                                                                                " << sceneString;
+	SetConsoleTextAttribute(consoleColor, 232);
+	std::cout << "              " << std::endl;
+	std::cout << "                                                                                     " << sceneString;
+	SetConsoleTextAttribute(consoleColor, 30); 
+	std::cout << "  ";
+	SetConsoleTextAttribute(consoleColor, 233);
+	std::cout << "           " << std::endl;
+	std::cout << " ______       ___         ______           ___     ___       ___       ___   ___               " << sceneString << std::endl;
+	std::cout << " |  __ \\     / _ \\       /  ____|          |  \\   /  |      / _ \\      |  \\  | |           " << sceneString << std::endl;
+	std::cout << " | |__| |   / /_\\ \\     |  |         ___   |   \\_/   |     / /_\\ \\     |   \\ | |         " << sceneString << std::endl;
+	std::cout << " | ____/   /  ___  \\    |  |        /__/   | |\\___/| |    /  ___  \\    | |\\ \\| |         " << sceneString << std::endl;
+	std::cout << " | |      /  /   \\  \\   |  |____           | |     | |   /  /   \\  \\   | | \\   |           " << sceneString << std::endl;
+	std::cout << " |_|     /__/     \\__\\   \\______|          |_|     |_|  /__/     \\__\\  |_|  \\__|               " << sceneString << std::endl;
+	std::cout << "                                                                                                  " << sceneString << std::endl;
+	SetConsoleTextAttribute(consoleColor, 30);
+	std::cout << "                                                                                             " << sceneString << std::endl;
+	SetConsoleTextAttribute(consoleColor, 0);
+
+}
+
+void Map::WriteMainMenu()
+{
+	HANDLE consoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(consoleColor, 224);
+	std::cout << "*-*-*-MAIN MENU-*-*-*" << std::endl;
+	SetConsoleTextAttribute(consoleColor, 10);	//10
+	std::cout << "1 - Play" << std::endl;
+	SetConsoleTextAttribute(consoleColor, 11);	//11
+	std::cout << "2 - Ranking" << std::endl;
+	SetConsoleTextAttribute(consoleColor, 12);	//12
+	std::cout << "0 - Exit Game" << std::endl;
 
 }

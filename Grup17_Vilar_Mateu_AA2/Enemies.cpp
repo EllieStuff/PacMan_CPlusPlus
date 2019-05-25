@@ -1,5 +1,7 @@
 #include "Enemies.h"
 
+enum class InputKeyEnemies { K_ESC, K_LEFT, K_RIGHT, K_UP, K_DOWN, COUNT };
+
 Enemy::Enemy()
 {
 	enemyNumber = 0;
@@ -17,6 +19,7 @@ void Enemy::SearchEnemies(char ** map, int maxRows, int maxColumns)
 				enemyList[enemyNumber - 1].initialPos.x = i;
 				enemyList[enemyNumber - 1].initialPos.y = j;
 				enemyList[enemyNumber - 1].pos = enemyList[enemyNumber - 1].initialPos;
+				enemyList[enemyNumber - 1].firstPos = enemyList[enemyNumber - 1].initialPos;
 				enemyList[enemyNumber - 1].overlapSymbol = ' ';
 
 				switch (map[i][j]) {
@@ -49,7 +52,7 @@ void Enemy::SearchEnemies(char ** map, int maxRows, int maxColumns)
 
 }
 
-void Enemy::MoveEnemies(char ** map, bool right, bool left, bool up, bool down)
+void Enemy::MoveEnemies(char ** map, bool keyboard[])
 {
 	for (int i = 0; i < enemyNumber; i++) {
 		switch (enemyList[i].id) {
@@ -59,12 +62,12 @@ void Enemy::MoveEnemies(char ** map, bool right, bool left, bool up, bool down)
 			break;
 
 		case 1: //El Inky es mou seguint els Inputs del teclat
-			MoveInky(map, i, right, left, up, down);
+			MoveInky(map, i, keyboard);
 
 			break;
 
 		case 2: //El Clyde es mou seguint l'inversa dels Inputs del teclat
-			MoveClyde(map, i, right, left, up, down);
+			MoveClyde(map, i, keyboard);
 
 			break;
 
@@ -77,6 +80,20 @@ void Enemy::MoveEnemies(char ** map, bool right, bool left, bool up, bool down)
 
 
 }
+
+void Enemy::ReinitEnemies(char ** map)
+{
+	for (int i = 0; i < enemyNumber; i++) {
+		map[pos.x][pos.y] = overlapSymbol;
+		enemyList[i].pos = enemyList[i].firstPos;
+		enemyList[i].initialPos = enemyList[i].firstPos;
+		overlapSymbol = ' ';
+		overlapSave = ' ';
+
+	}
+
+}
+
 
 void Enemy::MoveBlinky(char ** map, int i)
 {
@@ -474,7 +491,7 @@ void Enemy::MoveBlinky(char ** map, int i)
 
 }
 
-void Enemy::MoveInky(char ** map, int i, bool right, bool left, bool up, bool down)
+void Enemy::MoveInky(char ** map, int i, bool keyboard[])
 {
 	if (enemyList[i].overlapSymbol == '<' || enemyList[i].overlapSymbol == '>' || enemyList[i].overlapSymbol == 'v' || enemyList[i].overlapSymbol == '^') {
 		enemyList[i].overlapSave = ' ';
@@ -485,22 +502,22 @@ void Enemy::MoveInky(char ** map, int i, bool right, bool left, bool up, bool do
 
 	}
 
-	if (right && map[enemyList[i].pos.x][enemyList[i].pos.y + 1] != (char)219) {
+	if (keyboard[(int)InputKeyEnemies::K_RIGHT] && map[enemyList[i].pos.x][enemyList[i].pos.y + 1] != (char)219) {
 		enemyList[i].initialPos = enemyList[i].pos;
 		enemyList[i].pos.y++;
 
 	}
-	else if (left && map[enemyList[i].pos.x][enemyList[i].pos.y - 1] != (char)219) {
+	else if (keyboard[(int)InputKeyEnemies::K_LEFT] && map[enemyList[i].pos.x][enemyList[i].pos.y - 1] != (char)219) {
 		enemyList[i].initialPos = enemyList[i].pos;
 		enemyList[i].pos.y--;
 
 	}
-	else if (up && map[enemyList[i].pos.x - 1][enemyList[i].pos.y] != (char)219) {
+	else if (keyboard[(int)InputKeyEnemies::K_UP] && map[enemyList[i].pos.x - 1][enemyList[i].pos.y] != (char)219) {
 		enemyList[i].initialPos = enemyList[i].pos;
 		enemyList[i].pos.x--;
 
 	}
-	else if (down && map[enemyList[i].pos.x + 1][enemyList[i].pos.y] != (char)219) {
+	else if (keyboard[(int)InputKeyEnemies::K_DOWN] && map[enemyList[i].pos.x + 1][enemyList[i].pos.y] != (char)219) {
 		enemyList[i].initialPos = enemyList[i].pos;
 		enemyList[i].pos.x++;
 
@@ -513,7 +530,7 @@ void Enemy::MoveInky(char ** map, int i, bool right, bool left, bool up, bool do
 
 }
 
-void Enemy::MoveClyde(char ** map, int i, bool right, bool left, bool up, bool down)
+void Enemy::MoveClyde(char ** map, int i, bool keyboard[])
 {
 	if (enemyList[i].overlapSymbol == '<' || enemyList[i].overlapSymbol == '>' || enemyList[i].overlapSymbol == 'v' || enemyList[i].overlapSymbol == '^') {
 		enemyList[i].overlapSave = ' ';
@@ -524,22 +541,22 @@ void Enemy::MoveClyde(char ** map, int i, bool right, bool left, bool up, bool d
 
 	}
 
-	if (right && map[enemyList[i].pos.x][enemyList[i].pos.y - 1] != (char)219) {
+	if (keyboard[(int)InputKeyEnemies::K_RIGHT] && map[enemyList[i].pos.x][enemyList[i].pos.y - 1] != (char)219) {
 		enemyList[i].initialPos = enemyList[i].pos;
 		enemyList[i].pos.y--;
 
 	}
-	else if (left && map[enemyList[i].pos.x][enemyList[i].pos.y + 1] != (char)219) {
+	else if (keyboard[(int)InputKeyEnemies::K_LEFT] && map[enemyList[i].pos.x][enemyList[i].pos.y + 1] != (char)219) {
 		enemyList[i].initialPos = enemyList[i].pos;
 		enemyList[i].pos.y++;
 
 	}
-	else if (up && map[enemyList[i].pos.x + 1][enemyList[i].pos.y] != (char)219) {
+	else if (keyboard[(int)InputKeyEnemies::K_UP] && map[enemyList[i].pos.x + 1][enemyList[i].pos.y] != (char)219) {
 		enemyList[i].initialPos = enemyList[i].pos;
 		enemyList[i].pos.x++;
 
 	}
-	else if (down && map[enemyList[i].pos.x - 1][enemyList[i].pos.y] != (char)219) {
+	else if (keyboard[(int)InputKeyEnemies::K_DOWN] && map[enemyList[i].pos.x - 1][enemyList[i].pos.y] != (char)219) {
 		enemyList[i].initialPos = enemyList[i].pos;
 		enemyList[i].pos.x--;
 

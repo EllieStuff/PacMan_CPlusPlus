@@ -5,13 +5,15 @@
 
 class Enemy {
 private:
+	Position firstPos;
+
 	void Resize(int newSize);
 
-	void MoveBlinky(char** map, int i);
+	void MoveBlinky(char ** map, int i);
 
-	void MoveInky(char** map, int i, bool right, bool left, bool up, bool down);
+	void MoveInky(char ** map, int i, bool keyboard[]);
 
-	void MoveClyde(char** map, int i, bool right, bool left, bool up, bool down);
+	void MoveClyde(char ** map, int i, bool keyboard[]);
 
 public:
 	int id;
@@ -26,6 +28,8 @@ public:
 
 	void SearchEnemies(char** map, int maxRows, int maxColumns);
 
-	void MoveEnemies(char** map, bool right, bool left, bool up, bool down);
+	void MoveEnemies(char** map, bool keyboard[]);
+
+	void ReinitEnemies(char ** map);
 
 };

@@ -4,22 +4,30 @@
 #include "Player.h"
 #include "Types.h"
 #include "Enemies.h"
+#include <chrono>
 //#include "Types.h"
 //#include "Constants.h"
 
-//TODO: Ara que el Blinky ja esta fet, falta comprovar que les direccions a les que apunta siguin sempre random i correctes
+enum class InputKey { K_ESC, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_PAUSE, K_SPACE, K_ZERO, K_ONE, K_TWO, COUNT};
+enum class GameState {SPLASH_SCREEN, MAIN_MENU, GAME, RANKING, EXIT};
+
+//TODO: 1. Ranking (recordar fer-lo amb funció map), 2. PowerUps i 3. Revisar EnemyClasses.h i borrar-lo en casque doni masses problemes
 int main() {
 	srand(NULL(time));
+	bool keyboard[(int)InputKey::COUNT] = {};
+	GameState myGameState = GameState::SPLASH_SCREEN;
+	HANDLE consoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
 	Map map;
 	Player player;
-	Keys key;
 	Enemy enemy;
-	bool endGame = false;
+	Keys key;
+	//bool endGame = false;
 	bool pause = false;
-	bool startPause = false;
+	bool init = false;
+	//bool startPause = false;
 	bool gameOver = false;
 	int speed = 400;
-	bool right, left, up, down, escape, quitPause;
+	//bool right, left, up, down, escape, quitPause;
 
 	//Inicialitzar mapa
 	map.ReadMap();
@@ -29,81 +37,163 @@ int main() {
 	player.InitializePlayer(map.totalRows, map.totalColumns, map.map);
 	player.CalculateScore(map.map);
 
-	//Dibuixar mapa
-	std::cout <<" *-*-INIT-*-*" << std::endl << "Press space to start game." << std::endl;
-	map.WriteMap(player.pos);
-	std::cout << "SCORE: " << player.score;
-	player.CalculateHealth(enemy.enemyList, enemy.enemyNumber);
 
-	//Controlador d'estats: Init
-	while (true) {
-		key.GetKeys(right, left, up, down, escape, startPause, quitPause);
-		if (quitPause || escape) {
+	//Game Loop
+	while (myGameState != GameState::EXIT || gameOver) {
+		switch (myGameState) {
+		case GameState::SPLASH_SCREEN:
+			map.WriteSplashScreen("");
+			Sleep(1000);
 			system("cls");
+			map.WriteSplashScreen("  ");
+			Sleep(1000);
+			system("cls");
+			map.WriteSplashScreen("    ");
+			Sleep(1000);
+			system("cls");
+			myGameState = GameState::MAIN_MENU;
+
+			break;
+
+		case GameState::MAIN_MENU:
+			map.WriteMainMenu();
+			while (true) {
+				key.GetKeys(keyboard);
+				if (keyboard[static_cast<int>(InputKey::K_ONE)]) {
+					myGameState = GameState::GAME;
+					system("cls");
+					break;
+
+				}
+				else if (keyboard[static_cast<int>(InputKey::K_TWO)]) {
+					myGameState = GameState::RANKING;
+					system("cls");
+					break;
+
+				}
+				else if (keyboard[static_cast<int>(InputKey::K_ZERO)] || keyboard[static_cast<int>(InputKey::K_ESC)]) {
+					myGameState = GameState::EXIT;
+					system("cls");
+					break;
+
+				}
+
+
+			}
+
+			break;
+
+		case GameState::GAME:
+			SetConsoleTextAttribute(consoleColor, 224);
+
+			//Controlador d'estats: Pause
+			if (!init) {
+				map.ReadMap();
+				SetConsoleTextAttribute(consoleColor, 224);
+				std::cout << "*-*-INIT-*-*" << std::endl;
+				map.WriteMap(player.pos);
+				std::cout << "SCORE: " << player.score;
+				player.CalculateHealth(enemy.enemyList, enemy.enemyNumber);
+				while (true) {
+					key.GetKeys(keyboard);
+					if (keyboard[static_cast<int>(InputKey::K_SPACE)]) {
+						init = true;
+						system("cls");
+						SetConsoleTextAttribute(consoleColor, 224);
+						std::cout << "*-*-PLAY-*-*" << std::endl;
+						SetConsoleTextAttribute(consoleColor, 7);
+						break;
+
+					}
+				}
+
+			}
+			else if (player.lives < 1 || map.maxPoints == player.score) {
+				std::cout << "*-*-GAME OVER-*-*" << std::endl;
+				SetConsoleTextAttribute(consoleColor, 7);
+				std::cout << "Press escape to exit or space to see the ranking." << std::endl;
+				map.ActualizeMap(player.pos, player.initialPos, player.character, enemy.enemyList, enemy.enemyNumber);
+				while (true) {
+					key.GetKeys(keyboard);
+					if (keyboard[static_cast<int>(InputKey::K_SPACE)]) {
+						init = false;
+						player.ReinitPlayer();
+						enemy.ReinitEnemies(map.map);
+						//Insertar codi per a ranking
+						myGameState = GameState::RANKING;
+						break;
+
+					}
+					else if (keyboard[static_cast<int>(InputKey::K_ESC)]) {
+						init = false;
+						player.ReinitPlayer();
+						enemy.ReinitEnemies(map.map);
+						myGameState = GameState::MAIN_MENU;
+						break;
+
+					}
+
+				}
+
+			}
+			else if (keyboard[static_cast<int>(InputKey::K_PAUSE)]) {
+				pause = true;
+				std::cout << "*-*-PAUSE-*-*" << std::endl;
+				SetConsoleTextAttribute(consoleColor, 7);
+				std::cout << "Press space to continue." << std::endl;
+
+			}
+			else if (keyboard[static_cast<int>(InputKey::K_ESC)]) {
+				init = false;
+				player.ReinitPlayer();
+				enemy.ReinitEnemies(map.map);
+				myGameState = GameState::MAIN_MENU;
+
+			}
+			else {
+				std::cout << "*-*-PLAY-*-*" << std::endl;
+
+			}
+
+			//Input
+			key.GetKeys(keyboard);
+			player.MovePlayer(keyboard, map.map, map.totalColumns, map.totalRows);
+
+			if (myGameState != GameState::GAME) {
+				SetConsoleTextAttribute(consoleColor, 7);
+
+			}
+			else {
+				//Update
+				enemy.MoveEnemies(map.map, keyboard);
+				//Update del mapa i Draw
+				map.ActualizeMap(player.pos, player.initialPos, player.character, enemy.enemyList, enemy.enemyNumber);
+				//Draw
+				std::cout << "SCORE: " << player.score;
+				player.CalculateHealth(enemy.enemyList, enemy.enemyNumber);
+
+			}
+
+			//Esperar i borrar mapa anterior
+			Sleep(speed);
+			system("cls");
+
+			break;
+
+		case GameState::RANKING:
+			if (keyboard[static_cast<int>(InputKey::K_ESC)]) myGameState = GameState::MAIN_MENU;
+
+			break;
+
+		case GameState::EXIT:
+
+			break;
+
+		default:
 			break;
 
 		}
 
-	}
-
-	//Game Loop
-	while (!endGame) {
-		//Controlador d'estats: Pause
-		if (startPause) {
-			pause = true;
-			std::cout << "*-*-PAUSE-*-*" << std::endl << "Press space to continue." << std::endl;
-
-		}
-		else if (gameOver) {
-			std::cout << "*-*-GAME OVER-*-*" << std::endl << "Press escape to exit." << std::endl;
-
-		}
-		else {
-			std::cout << "*-*-PLAY-*-*" << std::endl;
-
-		}
-
-		//Actualitzar mapa
-		key.GetKeys(right, left, up, down, escape, startPause, quitPause);
-		player.MovePlayer(right, left, up, down, map.map, map.totalColumns, map.totalRows);
-		enemy.MoveEnemies(map.map, right, left, up, down);
-		map.ActualizeMap(player.pos, player.initialPos, player.character, enemy.enemyList, enemy.enemyNumber);
-		std::cout << "SCORE: " << player.score;
-		player.CalculateHealth(enemy.enemyList, enemy.enemyNumber);
-
-		//Pausar el joc
-		while (pause) {
-			key.GetKeys(right, left, up, down, escape, startPause, quitPause);
-			if (quitPause || escape) {
-				pause = false;
-
-			}
-
-		}
-
-		//Game Over
-		while (gameOver) {
-			key.GetKeys(right, left, up, down, escape, startPause, quitPause);
-			if (escape) {
-				gameOver = false;
-
-			}
-
-		}
-		if (player.lives < 1 || map.maxPoints == player.score) {
-			gameOver = true;
-
-		}
-
-		//Esperar i borrar mapa anterior
-		Sleep(speed);
-		system("cls");
-
-		//Sortir del joc
-		if (escape) {
-			endGame = true;
-
-		}
 
 	}
 

@@ -14,6 +14,7 @@ void Player::InitializePlayer(int totalRows, int totalColumns, char** map) {
 				pos.x = i;
 				pos.y = j;
 				initialPos = pos;
+				firstPos = pos;
 				return;
 
 			}
@@ -47,6 +48,7 @@ void Player::InitializePlayer(int totalRows, int totalColumns, char** map) {
 		}
 
 		if (possibleWays > 1 && (map[pos.x][pos.y] == '*' || map[pos.x][pos.y] == ' ') && map[pos.x][pos.y] != '#' && map[pos.x][pos.y] != '&' && map[pos.x][pos.y] != '$') {
+			firstPos = pos;
 			validPoint = true;
 
 		}
@@ -72,11 +74,12 @@ void Player::InitializePlayer(int totalRows, int totalColumns, char** map) {
 
 }
 
-void Player::MovePlayer(bool right, bool left, bool up, bool down, char** map, int columns, int rows) {
+void Player::MovePlayer(bool keyboard[], char** map, int columns, int rows) {
+	enum class InputKey { K_ESC, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_PAUSE, K_SPACE, COUNT };
 	initialPos = pos;
 
 	//Actualitza la posició del jugador
-	if (right) {
+	if (keyboard[(int)InputKey::K_RIGHT]) {
 		if (pos.y == columns - 1 && map[pos.x][0] != (char)219) {
 			pos.y = 0;
 
@@ -94,7 +97,7 @@ void Player::MovePlayer(bool right, bool left, bool up, bool down, char** map, i
 		character = '<';
 
 	}
-	else if (left) {
+	else if (keyboard[(int)InputKey::K_LEFT]) {
 		if (pos.y == 0 && map[pos.x][columns - 1] != (char)219) {
 			pos.y = columns - 1;
 
@@ -113,7 +116,7 @@ void Player::MovePlayer(bool right, bool left, bool up, bool down, char** map, i
 
 
 	}
-	else if (up) {
+	else if (keyboard[(int)InputKey::K_UP]) {
 		if (pos.x == rows - 1 && map[0][pos.y] != (char)219) {
 			pos.x = 0;
 
@@ -131,7 +134,7 @@ void Player::MovePlayer(bool right, bool left, bool up, bool down, char** map, i
 		character = 'v';
 
 	}
-	else if (down) {
+	else if (keyboard[(int)InputKey::K_DOWN]) {
 		if (pos.x == 0 && map[rows - 1][pos.y] != (char)219) {
 			pos.x = 0;
 
@@ -181,3 +184,14 @@ void Player::CalculateHealth(Enemy enemyList[], int enemyNum)
 	SetConsoleTextAttribute(consoleColor, 7);
 
 }
+
+void Player::ReinitPlayer()
+{
+	pos = firstPos;
+	initialPos = firstPos;
+	lives = INITIAL_LIVES;
+	score = INITIAL_SCORE;
+	character = '>';
+
+}
+

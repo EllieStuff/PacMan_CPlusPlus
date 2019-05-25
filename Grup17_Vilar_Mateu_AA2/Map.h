@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <string>
 #include "Types.h"
 #include "Enemies.h"
 
@@ -22,5 +23,11 @@ public:
 	void WriteMap(Position &pos);
 
 	void ActualizeMap(Position &pos, Position &lastPos, char &character, Enemy enemyList[], const int &enemyNum);
+
+	void WriteSplashScreen(std::string sceneString);
+
+	void WriteMainMenu();
+
+	void WriteRanking();
 
 };

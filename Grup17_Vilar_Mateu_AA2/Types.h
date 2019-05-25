@@ -22,14 +22,19 @@ public:
 
 class Keys {
 public:
-	void GetKeys(bool &right, bool &left, bool &up, bool &down, bool &escape, bool &startPause, bool &quitPause) {
-		right = GetAsyncKeyState(VK_RIGHT);
-		left = GetAsyncKeyState(VK_LEFT);
-		up = GetAsyncKeyState(VK_UP);
-		down = GetAsyncKeyState(VK_DOWN);
-		escape = GetAsyncKeyState(VK_ESCAPE);
-		startPause = GetAsyncKeyState(0x50);
-		quitPause = GetAsyncKeyState(' ');
+	void GetKeys(bool keyboard[]) {
+		enum class newInputKey { K_ESC, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_PAUSE, K_SPACE, K_ZERO, K_ONE, K_TWO, COUNT };
+		keyboard[(int)newInputKey::K_RIGHT] = GetAsyncKeyState(VK_RIGHT);
+		keyboard[(int)newInputKey::K_LEFT] = GetAsyncKeyState(VK_LEFT);
+		keyboard[(int)newInputKey::K_UP] = GetAsyncKeyState(VK_UP);
+		keyboard[(int)newInputKey::K_DOWN] = GetAsyncKeyState(VK_DOWN);
+		keyboard[(int)newInputKey::K_ESC] = GetAsyncKeyState(VK_ESCAPE);
+		keyboard[(int)newInputKey::K_PAUSE] = GetAsyncKeyState(0x50);
+		keyboard[(int)newInputKey::K_SPACE] = GetAsyncKeyState(' ');
+		keyboard[(int)newInputKey::K_ZERO] = GetAsyncKeyState('0');
+		keyboard[(int)newInputKey::K_ONE] = GetAsyncKeyState('1');
+		keyboard[(int)newInputKey::K_TWO] = GetAsyncKeyState('2');
+
 
 	}
 
