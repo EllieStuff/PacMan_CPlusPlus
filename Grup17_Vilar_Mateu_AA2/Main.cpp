@@ -5,13 +5,14 @@
 #include "Types.h"
 #include "Enemies.h"
 #include <chrono>
+#include "Ranking.h"
 //#include "Types.h"
 //#include "Constants.h"
 
 enum class InputKey { K_ESC, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_PAUSE, K_SPACE, K_ZERO, K_ONE, K_TWO, COUNT};
 enum class GameState {SPLASH_SCREEN, MAIN_MENU, GAME, RANKING, EXIT};
 
-//TODO: 1. Ranking (recordar fer-lo amb funció map), 2. PowerUps i 3. Revisar EnemyClasses.h i borrar-lo en casque doni masses problemes
+//TODO: 1. Ranking (llegir dades actuals), 2. PowerUps i 3. Revisar EnemyClasses.h i borrar-lo en casque doni masses problemes
 int main() {
 	srand(NULL(time));
 	bool keyboard[(int)InputKey::COUNT] = {};
@@ -21,12 +22,14 @@ int main() {
 	Player player;
 	Enemy enemy;
 	Keys key;
+	Ranking ranking;
 	//bool endGame = false;
 	bool pause = false;
 	bool init = false;
 	//bool startPause = false;
 	bool gameOver = false;
 	int speed = 400;
+	const int DELAY = 1000;
 	//bool right, left, up, down, escape, quitPause;
 
 	//Inicialitzar mapa
@@ -37,19 +40,22 @@ int main() {
 	player.InitializePlayer(map.totalRows, map.totalColumns, map.map);
 	player.CalculateScore(map.map);
 
+	//Inicialitzar ranking
+	ranking.WriteRanking();
+
 
 	//Game Loop
 	while (myGameState != GameState::EXIT || gameOver) {
 		switch (myGameState) {
 		case GameState::SPLASH_SCREEN:
 			map.WriteSplashScreen("");
-			Sleep(1000);
+			Sleep(DELAY);
 			system("cls");
 			map.WriteSplashScreen("  ");
-			Sleep(1000);
+			Sleep(DELAY);
 			system("cls");
 			map.WriteSplashScreen("    ");
-			Sleep(1000);
+			Sleep(DELAY);
 			system("cls");
 			myGameState = GameState::MAIN_MENU;
 
@@ -121,6 +127,7 @@ int main() {
 						enemy.ReinitEnemies(map.map);
 						//Insertar codi per a ranking
 						myGameState = GameState::RANKING;
+						if (ranking.CheckIfTop5(player.score)) ranking.ReadRanking();
 						break;
 
 					}
@@ -137,10 +144,27 @@ int main() {
 
 			}
 			else if (keyboard[static_cast<int>(InputKey::K_PAUSE)]) {
-				pause = true;
 				std::cout << "*-*-PAUSE-*-*" << std::endl;
 				SetConsoleTextAttribute(consoleColor, 7);
 				std::cout << "Press space to continue." << std::endl;
+				map.ActualizeMap(player.pos, player.initialPos, player.character, enemy.enemyList, enemy.enemyNumber);
+				while (true) {
+					key.GetKeys(keyboard);
+					if (keyboard[static_cast<int>(InputKey::K_SPACE)]) {
+						system("cls");
+						SetConsoleTextAttribute(consoleColor, 224);
+						std::cout << "*-*-PLAY-*-*" << std::endl;
+						break;
+
+					}
+					else if (keyboard[static_cast<int>(InputKey::K_ESC)]) {
+						myGameState = GameState::MAIN_MENU;
+						system("cls");
+						break;
+
+					}
+
+				}
 
 			}
 			else if (keyboard[static_cast<int>(InputKey::K_ESC)]) {
@@ -181,7 +205,21 @@ int main() {
 			break;
 
 		case GameState::RANKING:
-			if (keyboard[static_cast<int>(InputKey::K_ESC)]) myGameState = GameState::MAIN_MENU;
+			SetConsoleTextAttribute(consoleColor, 224);
+			std::cout << "*-*-*-RANKING-*-*-*" << std::endl;
+			SetConsoleTextAttribute(consoleColor, 7);
+			ranking.WriteTop5();
+			while (true) {
+				key.GetKeys(keyboard);
+				if (keyboard[static_cast<int>(InputKey::K_ESC)]) {
+					myGameState = GameState::MAIN_MENU;
+					system("cls");
+					Sleep(speed);
+					break;
+
+				}
+
+			}
 
 			break;
 

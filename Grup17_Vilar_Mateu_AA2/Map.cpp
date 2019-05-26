@@ -211,3 +211,11 @@ void Map::WriteMainMenu()
 	std::cout << "0 - Exit Game" << std::endl;
 
 }
+
+void Map::WriteRanking()
+{
+	std::ofstream ranking("Ranking.txt");
+	ranking << "";
+	ranking.close();
+
+}
