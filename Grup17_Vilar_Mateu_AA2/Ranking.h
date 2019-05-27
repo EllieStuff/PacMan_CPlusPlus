@@ -22,8 +22,10 @@ public:
 
 	void ReadRanking();
 
-	void WriteRanking();
+	void InitializeRanking();
 
 	void WriteTop5();
+
+	void OrderRanking();
 
 };

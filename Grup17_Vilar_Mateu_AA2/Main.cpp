@@ -41,7 +41,7 @@ int main() {
 	player.CalculateScore(map.map);
 
 	//Inicialitzar ranking
-	ranking.WriteRanking();
+	ranking.InitializeRanking();
 
 
 	//Game Loop
@@ -62,6 +62,7 @@ int main() {
 			break;
 
 		case GameState::MAIN_MENU:
+			//player.ReinitPlayer();
 			map.WriteMainMenu();
 			while (true) {
 				key.GetKeys(keyboard);
@@ -123,11 +124,15 @@ int main() {
 					key.GetKeys(keyboard);
 					if (keyboard[static_cast<int>(InputKey::K_SPACE)]) {
 						init = false;
-						player.ReinitPlayer();
+						//player.ReinitPlayer();
 						enemy.ReinitEnemies(map.map);
-						//Insertar codi per a ranking
 						myGameState = GameState::RANKING;
-						if (ranking.CheckIfTop5(player.score)) ranking.ReadRanking();
+						if (ranking.CheckIfTop5(player.score)) {
+							ranking.ReadRanking();
+							ranking.OrderRanking();
+
+						}
+						player.ReinitPlayer();
 						break;
 
 					}

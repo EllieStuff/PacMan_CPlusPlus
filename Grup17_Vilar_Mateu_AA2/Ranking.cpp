@@ -27,15 +27,23 @@ bool Ranking::CheckIfTop5(int score)
 	for (it = playerMap.begin(); it != playerMap.end(); it++) {
 		if (score > it->second) {
 			name = AskForName();
-			playerMap.erase(it);
 			playerMap.insert(it, std::pair<std::string, int>(name, score));
+			/*if (playerMap[name] > it->second) {
+				int lastValue = it->second;
+				std::string lastName = it->first;
+				it 
+
+			}*/
+			playerMap.erase(it);
+			//playerMap[name] = { score };
 			playerInserted = true;
 			break;
 		}
 	}
-	if (playerMap.size() < NUM_OF_RANKED_PLAYERS) {
+	if (playerMap.size() < NUM_OF_RANKED_PLAYERS && !playerInserted) {
 		name = AskForName();
 		playerMap.insert(playerMap.end(), std::pair<std::string, int>(name, score));
+		//playerMap[name] = { score };
 		playerInserted = true;
 		
 	}
@@ -54,13 +62,16 @@ void Ranking::ReadRanking()
 
 }
 
-void Ranking::WriteRanking()
+void Ranking::InitializeRanking()
 {
 	std::ifstream ranking("Ranking.txt");
 	std::map<std::string, int>::iterator it;
-	for (it = playerMap.begin(); it != playerMap.end(); it++) {
+	std::string name;
+	while(ranking >> name) {
 		//Vull que em llegeixi l'actual txt però per alguna raó no em deixa fer-ho amb el it
-		//ranking >> it->second;
+		int value;
+		ranking >> value;
+		playerMap[name] = { value };
 
 	}
 	ranking.close();
@@ -73,14 +84,42 @@ void Ranking::WriteTop5()
 {
 	HANDLE consoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
 	std::map <std::string, int>::iterator it;
-	int count = 1;
+	int count = 0;
 	for (it = playerMap.begin(); it != playerMap.end(); it++) {
 		if(count == 1) SetConsoleTextAttribute(consoleColor, 10);
 		else if (count == 5) SetConsoleTextAttribute(consoleColor, 12);
 		else SetConsoleTextAttribute(consoleColor, 11);
-		std::cout << count << "- " << it->first << "		" << it->second << std::endl;
+		if (count != 0) std::cout << count << "- " << it->first << "		" << it->second << std::endl;
 		count++;
 
 	}
+
+}
+
+void Ranking::OrderRanking()
+{
+	int* values = new int[NUM_OF_RANKED_PLAYERS];
+	std::string* names = new std::string[NUM_OF_RANKED_PLAYERS];
+	//Ja que això no funciona, pots provar a iniciar les arrays a partir d'un iterator i després canviar els valors del map (?)
+	int count = 0;
+	for (std::map<std::string, int>::iterator it = playerMap.begin(); it != playerMap.end(); it++) {
+		names[count] = it->first;
+		count++;
+
+	}
+	playerMap["tmp"];
+	for (int i = 0; i < NUM_OF_RANKED_PLAYERS - 1; i++) {
+		for (int j = 0; j < NUM_OF_RANKED_PLAYERS - i - 1; j++) {
+			if (playerMap[names[j]] < playerMap[names[j + 1]]) {
+				playerMap["tmp"] = playerMap[names[j]];
+				playerMap[names[j]] = playerMap[names[j + 1]];
+				playerMap[names[j]] = playerMap["tmp"];
+
+			}
+
+		}
+
+	}
+	playerMap.erase("tmp");
 
 }
