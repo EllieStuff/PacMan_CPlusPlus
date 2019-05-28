@@ -22,7 +22,7 @@ public:
 
 	void WriteMap(Position &pos);
 
-	void ActualizeMap(Position &pos, Position &lastPos, char &character, Enemy enemyList[], const int &enemyNum);
+	void ActualizeMap(Position &pos, Position &lastPos, char &character, Enemy enemyList[], const int &enemyNum, const bool &hasPowerUp);
 
 	void WriteSplashScreen(std::string sceneString);
 

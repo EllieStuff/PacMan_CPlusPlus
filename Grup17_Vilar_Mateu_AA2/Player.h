@@ -21,6 +21,7 @@ public:
 	int lives = 3;
 	int score = 0;
 	char character;
+	bool hasPowerUp = false;
 
 	void InitializePlayer(int totalRows, int totalColumns, char** map);
 
@@ -28,7 +29,7 @@ public:
 
 	void CalculateScore(char** map);
 
-	void CalculateHealth(Enemy enemyList[], int enemyNum);
+	void CalculateHealth(Enemy enemyList[], int enemyNum, char** map);
 
 	void ReinitPlayer();
 

@@ -153,6 +153,8 @@ void Player::MovePlayer(bool keyboard[], char** map, int columns, int rows) {
 
 	}
 
+	if (map[pos.x][pos.y] == '0') hasPowerUp = true;
+
 }
 
 void Player::CalculateScore(char** map) {
@@ -169,12 +171,24 @@ void Player::ReinitPos() {
 	character = '>';
 
 }
-void Player::CalculateHealth(Enemy enemyList[], int enemyNum)
+void Player::CalculateHealth(Enemy enemyList[], int enemyNum, char** map)
 {
 	for (int i = 0; i < enemyNum; i++) {
 		if (enemyList[i].pos.Equal(pos) || (enemyList[i].initialPos.Equal(pos) && enemyList[i].pos.Equal(initialPos))) {
-			lives--;
-			ReinitPos();
+			if (hasPowerUp) {
+				if (enemyList[i].overlapSymbol == character) map[enemyList[i].pos.x][enemyList[i].pos.y] = ' ';
+				else map[enemyList[i].pos.x][enemyList[i].pos.y] = enemyList[i].overlapSymbol;
+				enemyList[i].overlapSave = ' ';
+				enemyList[i].overlapSymbol = ' ';
+				enemyList[i].pos = enemyList[i].firstPos;
+				enemyList[i].initialPos = enemyList[i].firstPos;
+
+			}
+			else {
+				lives--;
+				ReinitPos();
+
+			}
 
 		}
 
@@ -198,6 +212,7 @@ void Player::ReinitPlayer()
 	initialPos = firstPos;
 	lives = INITIAL_LIVES;
 	score = INITIAL_SCORE;
+	hasPowerUp = false;
 	character = '>';
 
 }

@@ -5,7 +5,6 @@
 
 class Enemy {
 private:
-	Position firstPos;
 	char character;
 
 	void Resize(int newSize);
@@ -22,6 +21,7 @@ public:
 	int id;
 	Enemy* enemyList;
 	int enemyNumber;
+	Position firstPos;
 	Position pos;
 	Position initialPos;
 	char overlapSymbol;

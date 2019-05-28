@@ -94,7 +94,7 @@ void Map::WriteMap(Position &playerPos) {
 
 }
 
-void Map::ActualizeMap(Position &playerPos, Position &lastPos, char &character, Enemy enemyList[], const int &enemyNum) {
+void Map::ActualizeMap(Position &playerPos, Position &lastPos, char &character, Enemy enemyList[], const int &enemyNum, const bool &hasPowerUp) {
 	map[lastPos.x][lastPos.y] = ' ';
 	if (map[playerPos.x][playerPos.y] == (char)219) {
 		playerPos = lastPos;
@@ -132,7 +132,12 @@ void Map::ActualizeMap(Position &playerPos, Position &lastPos, char &character, 
 	HANDLE consoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
 	for (int i = 0; i < totalRows; i++) {
 		for (int j = 0; j < totalColumns; j++) {
-			if (map[i][j] == '<' || map[i][j] == '>' || map[i][j] == 'v' || map[i][j] == '^' || map[i][j] == '0') {
+			if (map[i][j] == '<' || map[i][j] == '>' || map[i][j] == 'v' || map[i][j] == '^') {
+				if (hasPowerUp) SetConsoleTextAttribute(consoleColor, 3);
+				else SetConsoleTextAttribute(consoleColor, 6);
+
+			}
+			else if (map[i][j] == '0') {
 				SetConsoleTextAttribute(consoleColor, 6);
 
 			}

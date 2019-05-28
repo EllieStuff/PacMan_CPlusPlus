@@ -1,6 +1,6 @@
 21;19;
 XXXXXXXXXXXXXXXXXXX
-X********X********X
+X0*******X*******0X
 X*XX*XXX*X*XXX*XX*X
 X********&********X
 X*XX*X*XXXXX*X*XX*X
@@ -18,5 +18,5 @@ X**X*****$*****X**X
 XX*X*X*XXXXX*X*X*XX
 X****X***X***X****X
 X*XXXXXX*X*XXXXXX*X
-X*****************X
+X0***************0X
 XXXXXXXXXXXXXXXXXXX

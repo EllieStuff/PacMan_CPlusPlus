@@ -13,7 +13,7 @@ void Enemy::SearchEnemies(char ** map, int maxRows, int maxColumns)
 {
 	for (int i = 0; i < maxRows; i++) {
 		for (int j = 0; j < maxColumns; j++) {
-			if (map[i][j] != 'X' && map[i][j] != '*' && map[i][j] != ' ' && map[i][j] != '>') {
+			if (map[i][j] != 'X' && map[i][j] != '*' && map[i][j] != ' ' && map[i][j] != '>' && map[i][j] != '0') {
 				enemyNumber++;
 				Resize(enemyNumber);
 				enemyList[enemyNumber - 1].initialPos.x = i;
@@ -572,11 +572,6 @@ void Enemy::MoveClyde(char ** map, int i, bool keyboard[])
 
 void Enemy::CheckTP(char ** map, int i, int columns, int rows)
 {
-	char character = '-';
-	if (enemyList[i].id == 0) character = '#';
-	else if (enemyList[i].id == 1) character = '&';
-	else if (enemyList[i].id == 2) character = '$';
-
 	if (pos.x > columns - 1) {
 		map[enemyList[i].pos.x][enemyList[i].pos.y] = ' ';
 		if (map[0][enemyList[i].pos.y] != (char)219) {
@@ -584,8 +579,6 @@ void Enemy::CheckTP(char ** map, int i, int columns, int rows)
 			if (enemyList[i].id == 0) initialPos.x = -1;
 		}
 		else enemyList[i].pos.x = columns - 1;
-
-		map[enemyList[i].pos.x][enemyList[i].pos.y] = character;
 
 	}
 	else if (enemyList[i].pos.x < 0) {
@@ -596,8 +589,6 @@ void Enemy::CheckTP(char ** map, int i, int columns, int rows)
 		}
 		else enemyList[i].pos.x = 0;
 
-		map[enemyList[i].pos.x][enemyList[i].pos.y] = character;
-
 	}
 	else if (enemyList[i].pos.y > rows - 1) {
 		map[enemyList[i].pos.x][enemyList[i].pos.y] = ' ';
@@ -607,8 +598,6 @@ void Enemy::CheckTP(char ** map, int i, int columns, int rows)
 		}
 		else enemyList[i].pos.y = rows - 1;
 
-		map[enemyList[i].pos.x][enemyList[i].pos.y] = character;
-
 	}
 	else if (enemyList[i].pos.y < 0) {
 		map[enemyList[i].pos.x][enemyList[i].pos.y] = ' ';
@@ -617,8 +606,6 @@ void Enemy::CheckTP(char ** map, int i, int columns, int rows)
 			if (enemyList[i].id == 0) initialPos.y = rows - 2;
 		}
 		else enemyList[i].pos.y = rows - 1;
-
-		map[enemyList[i].pos.x][enemyList[i].pos.y] = character;
 
 	}
 

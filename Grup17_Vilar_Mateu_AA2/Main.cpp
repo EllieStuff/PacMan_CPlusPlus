@@ -100,7 +100,7 @@ int main() {
 				std::cout << "*-*-INIT-*-*" << std::endl;
 				map.WriteMap(player.pos);
 				std::cout << "SCORE: " << player.score;
-				player.CalculateHealth(enemy.enemyList, enemy.enemyNumber);
+				player.CalculateHealth(enemy.enemyList, enemy.enemyNumber, map.map);
 				while (true) {
 					key.GetKeys(keyboard);
 					if (keyboard[static_cast<int>(InputKey::K_SPACE)]) {
@@ -119,7 +119,7 @@ int main() {
 				std::cout << "*-*-GAME OVER-*-*" << std::endl;
 				SetConsoleTextAttribute(consoleColor, 7);
 				std::cout << "Press escape to exit or space to see the ranking." << std::endl;
-				map.ActualizeMap(player.pos, player.initialPos, player.character, enemy.enemyList, enemy.enemyNumber);
+				map.ActualizeMap(player.pos, player.initialPos, player.character, enemy.enemyList, enemy.enemyNumber, player.hasPowerUp);
 				while (true) {
 					key.GetKeys(keyboard);
 					if (keyboard[static_cast<int>(InputKey::K_SPACE)]) {
@@ -147,7 +147,7 @@ int main() {
 				std::cout << "*-*-PAUSE-*-*" << std::endl;
 				SetConsoleTextAttribute(consoleColor, 7);
 				std::cout << "Press space to continue." << std::endl;
-				map.ActualizeMap(player.pos, player.initialPos, player.character, enemy.enemyList, enemy.enemyNumber);
+				map.ActualizeMap(player.pos, player.initialPos, player.character, enemy.enemyList, enemy.enemyNumber, player.hasPowerUp);
 				while (true) {
 					key.GetKeys(keyboard);
 					if (keyboard[static_cast<int>(InputKey::K_SPACE)]) {
@@ -191,10 +191,10 @@ int main() {
 				//Update
 				enemy.MoveEnemies(map.map, keyboard, map.totalRows, map.totalColumns);
 				//Update del mapa i Draw
-				map.ActualizeMap(player.pos, player.initialPos, player.character, enemy.enemyList, enemy.enemyNumber);
+				map.ActualizeMap(player.pos, player.initialPos, player.character, enemy.enemyList, enemy.enemyNumber, player.hasPowerUp);
 				//Draw
 				std::cout << "SCORE: " << player.score;
-				player.CalculateHealth(enemy.enemyList, enemy.enemyNumber);
+				player.CalculateHealth(enemy.enemyList, enemy.enemyNumber, map.map);
 
 			}
 
