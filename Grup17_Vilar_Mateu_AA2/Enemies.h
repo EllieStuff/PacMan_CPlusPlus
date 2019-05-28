@@ -6,6 +6,7 @@
 class Enemy {
 private:
 	Position firstPos;
+	char character;
 
 	void Resize(int newSize);
 
@@ -14,6 +15,8 @@ private:
 	void MoveInky(char ** map, int i, bool keyboard[]);
 
 	void MoveClyde(char ** map, int i, bool keyboard[]);
+
+	void CheckTP(char** map, int columns, int rows);
 
 public:
 	int id;
@@ -28,7 +31,7 @@ public:
 
 	void SearchEnemies(char** map, int maxRows, int maxColumns);
 
-	void MoveEnemies(char** map, bool keyboard[]);
+	void MoveEnemies(char** map, bool keyboard[], int columns, int rows);
 
 	void ReinitEnemies(char ** map);
 

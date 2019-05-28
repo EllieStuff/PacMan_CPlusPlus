@@ -52,7 +52,7 @@ void Enemy::SearchEnemies(char ** map, int maxRows, int maxColumns)
 
 }
 
-void Enemy::MoveEnemies(char ** map, bool keyboard[])
+void Enemy::MoveEnemies(char ** map, bool keyboard[], int columns, int rows)
 {
 	for (int i = 0; i < enemyNumber; i++) {
 		switch (enemyList[i].id) {
@@ -75,6 +75,7 @@ void Enemy::MoveEnemies(char ** map, bool keyboard[])
 			break;
 
 		}
+		CheckTP(map, columns, rows);
 
 	}
 
@@ -564,6 +565,48 @@ void Enemy::MoveClyde(char ** map, int i, bool keyboard[])
 
 	if (map[enemyList[i].pos.x][enemyList[i].pos.y] != '$') {
 		enemyList[i].overlapSymbol = map[enemyList[i].pos.x][enemyList[i].pos.y];
+
+	}
+
+}
+
+void Enemy::CheckTP(char ** map, int columns, int rows)
+{
+	char character = '-';
+	if (id == 0) character = '#';
+	else if (id == 1) character = '&';
+	else if (id == 2) character = '$';
+
+	if (pos.x > columns - 1) {
+		map[pos.x][pos.y] = ' ';
+		if (map[0][pos.y] != (char)219) pos.x = 0;
+		else pos.x = columns - 1;
+
+		map[pos.x][pos.y] = character;
+
+	}
+	else if (pos.x < 0) {
+		map[pos.x][pos.y] = ' ';
+		if (map[columns - 1][pos.y] != (char)219) pos.x = columns - 1;
+		else pos.x = 0;
+
+		map[pos.x][pos.y] = character;
+
+	}
+	else if (pos.y > rows - 1) {
+		map[pos.x][pos.y] = ' ';
+		if (map[pos.x][0] != (char)219) pos.y = 0;
+		else pos.y = rows - 1;
+
+		map[pos.x][pos.y] = character;
+
+	}
+	else if (pos.y < 0) {
+		map[pos.x][pos.y] = ' ';
+		if (map[pos.x][rows - 1] != (char)219) pos.y = 0;
+		else pos.y = rows - 1;
+
+		map[pos.x][pos.y] = character;
 
 	}
 

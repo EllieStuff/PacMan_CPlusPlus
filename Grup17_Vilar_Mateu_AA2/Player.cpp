@@ -163,11 +163,18 @@ void Player::CalculateScore(char** map) {
 
 }
 
+void Player::ReinitPos() {
+	pos = firstPos;
+	initialPos = firstPos;
+	character = '>';
+
+}
 void Player::CalculateHealth(Enemy enemyList[], int enemyNum)
 {
 	for (int i = 0; i < enemyNum; i++) {
 		if (enemyList[i].pos.Equal(pos) || (enemyList[i].initialPos.Equal(pos) && enemyList[i].pos.Equal(initialPos))) {
 			lives--;
+			ReinitPos();
 
 		}
 

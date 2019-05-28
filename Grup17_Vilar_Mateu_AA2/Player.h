@@ -13,6 +13,8 @@ private:
 	const int INITIAL_LIVES = 3;
 	const int INITIAL_SCORE = 0;
 
+	void ReinitPos();
+
 public:
 	Position pos;
 	Position initialPos;
