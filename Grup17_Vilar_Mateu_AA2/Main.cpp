@@ -189,7 +189,7 @@ int main() {
 			}
 			else {
 				//Update
-				enemy.MoveEnemies(map.map, keyboard, map.totalColumns, map.totalRows);
+				enemy.MoveEnemies(map.map, keyboard, map.totalRows, map.totalColumns);
 				//Update del mapa i Draw
 				map.ActualizeMap(player.pos, player.initialPos, player.character, enemy.enemyList, enemy.enemyNumber);
 				//Draw

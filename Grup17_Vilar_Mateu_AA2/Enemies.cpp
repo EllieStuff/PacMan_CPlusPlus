@@ -75,7 +75,7 @@ void Enemy::MoveEnemies(char ** map, bool keyboard[], int columns, int rows)
 			break;
 
 		}
-		CheckTP(map, columns, rows);
+		CheckTP(map, i, columns, rows);
 
 	}
 
@@ -570,43 +570,55 @@ void Enemy::MoveClyde(char ** map, int i, bool keyboard[])
 
 }
 
-void Enemy::CheckTP(char ** map, int columns, int rows)
+void Enemy::CheckTP(char ** map, int i, int columns, int rows)
 {
 	char character = '-';
-	if (id == 0) character = '#';
-	else if (id == 1) character = '&';
-	else if (id == 2) character = '$';
+	if (enemyList[i].id == 0) character = '#';
+	else if (enemyList[i].id == 1) character = '&';
+	else if (enemyList[i].id == 2) character = '$';
 
 	if (pos.x > columns - 1) {
-		map[pos.x][pos.y] = ' ';
-		if (map[0][pos.y] != (char)219) pos.x = 0;
-		else pos.x = columns - 1;
+		map[enemyList[i].pos.x][enemyList[i].pos.y] = ' ';
+		if (map[0][enemyList[i].pos.y] != (char)219) {
+			enemyList[i].pos.x = 0;
+			if (enemyList[i].id == 0) initialPos.x = -1;
+		}
+		else enemyList[i].pos.x = columns - 1;
 
-		map[pos.x][pos.y] = character;
-
-	}
-	else if (pos.x < 0) {
-		map[pos.x][pos.y] = ' ';
-		if (map[columns - 1][pos.y] != (char)219) pos.x = columns - 1;
-		else pos.x = 0;
-
-		map[pos.x][pos.y] = character;
+		map[enemyList[i].pos.x][enemyList[i].pos.y] = character;
 
 	}
-	else if (pos.y > rows - 1) {
-		map[pos.x][pos.y] = ' ';
-		if (map[pos.x][0] != (char)219) pos.y = 0;
-		else pos.y = rows - 1;
+	else if (enemyList[i].pos.x < 0) {
+		map[enemyList[i].pos.x][enemyList[i].pos.y] = ' ';
+		if (map[columns - 1][enemyList[i].pos.y] != (char)219) {
+			enemyList[i].pos.x = columns - 1;
+			if (enemyList[i].id == 0) initialPos.x = columns - 2;
+		}
+		else enemyList[i].pos.x = 0;
 
-		map[pos.x][pos.y] = character;
+		map[enemyList[i].pos.x][enemyList[i].pos.y] = character;
 
 	}
-	else if (pos.y < 0) {
-		map[pos.x][pos.y] = ' ';
-		if (map[pos.x][rows - 1] != (char)219) pos.y = 0;
-		else pos.y = rows - 1;
+	else if (enemyList[i].pos.y > rows - 1) {
+		map[enemyList[i].pos.x][enemyList[i].pos.y] = ' ';
+		if (map[enemyList[i].pos.x][0] != (char)219) {
+			enemyList[i].pos.y = 0;
+			if (enemyList[i].id == 0) initialPos.y = -1;
+		}
+		else enemyList[i].pos.y = rows - 1;
 
-		map[pos.x][pos.y] = character;
+		map[enemyList[i].pos.x][enemyList[i].pos.y] = character;
+
+	}
+	else if (enemyList[i].pos.y < 0) {
+		map[enemyList[i].pos.x][enemyList[i].pos.y] = ' ';
+		if (map[enemyList[i].pos.x][rows - 1] != (char)219) {
+			enemyList[i].pos.y = rows - 1;
+			if (enemyList[i].id == 0) initialPos.y = rows - 2;
+		}
+		else enemyList[i].pos.y = rows - 1;
+
+		map[enemyList[i].pos.x][enemyList[i].pos.y] = character;
 
 	}
 

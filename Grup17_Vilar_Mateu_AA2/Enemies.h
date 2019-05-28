@@ -16,7 +16,7 @@ private:
 
 	void MoveClyde(char ** map, int i, bool keyboard[]);
 
-	void CheckTP(char** map, int columns, int rows);
+	void CheckTP(char** map, int i, int columns, int rows);
 
 public:
 	int id;
