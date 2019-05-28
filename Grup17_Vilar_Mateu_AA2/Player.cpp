@@ -171,7 +171,7 @@ void Player::ReinitPos() {
 	character = '>';
 
 }
-void Player::CalculateHealth(Enemy enemyList[], int enemyNum, char** map)
+void Player::CalculateHealth(Enemy enemyList[], int enemyNum, char** map, int &maxPoints)
 {
 	for (int i = 0; i < enemyNum; i++) {
 		if (enemyList[i].pos.Equal(pos) || (enemyList[i].initialPos.Equal(pos) && enemyList[i].pos.Equal(initialPos))) {
@@ -182,6 +182,8 @@ void Player::CalculateHealth(Enemy enemyList[], int enemyNum, char** map)
 				enemyList[i].overlapSymbol = ' ';
 				enemyList[i].pos = enemyList[i].firstPos;
 				enemyList[i].initialPos = enemyList[i].firstPos;
+				maxPoints += BONUS_POINTS;
+				score += BONUS_POINTS;
 
 			}
 			else {
@@ -214,6 +216,21 @@ void Player::ReinitPlayer()
 	score = INITIAL_SCORE;
 	hasPowerUp = false;
 	character = '>';
+
+}
+
+void Player::ControlPowerUpState(time_t & start)
+{
+	if (hasPowerUp && onCountDown && start <= clock()) {
+		hasPowerUp = false;
+		onCountDown = false;
+
+	}
+	else if (hasPowerUp && !onCountDown && start < clock()) {
+		start = clock() + POWER_UP_TIME;
+		onCountDown = true;
+
+	}
 
 }
 

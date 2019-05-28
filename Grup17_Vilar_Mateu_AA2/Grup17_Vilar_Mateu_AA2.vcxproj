@@ -117,7 +117,6 @@
   <ItemGroup>
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Enemies.h" />
-    <ClInclude Include="EnemyClasses.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Ranking.h" />

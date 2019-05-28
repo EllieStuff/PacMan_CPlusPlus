@@ -11,6 +11,7 @@ void Map::ReadMap() {
 		config >> heap;
 		config >> totalColumns;
 		config >> heap;
+		maxPoints = 0;
 
 		//Creació de l'array map
 		map = new char*[totalRows];

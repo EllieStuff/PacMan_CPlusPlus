@@ -4,10 +4,8 @@
 #include "Player.h"
 #include "Types.h"
 #include "Enemies.h"
-#include <chrono>
+#include <time.h>
 #include "Ranking.h"
-//#include "Types.h"
-//#include "Constants.h"
 
 enum class InputKey { K_ESC, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_PAUSE, K_SPACE, K_ZERO, K_ONE, K_TWO, COUNT};
 enum class GameState {SPLASH_SCREEN, MAIN_MENU, GAME, RANKING, EXIT};
@@ -15,6 +13,7 @@ enum class GameState {SPLASH_SCREEN, MAIN_MENU, GAME, RANKING, EXIT};
 //TODO: 1. Ranking (llegir dades actuals), 2. PowerUps i 3. Revisar EnemyClasses.h i borrar-lo en casque doni masses problemes
 int main() {
 	srand(NULL(time));
+	time_t start = clock();
 	bool keyboard[(int)InputKey::COUNT] = {};
 	GameState myGameState = GameState::SPLASH_SCREEN;
 	HANDLE consoleColor = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -23,14 +22,11 @@ int main() {
 	Enemy enemy;
 	Keys key;
 	Ranking ranking;
-	//bool endGame = false;
 	bool pause = false;
 	bool init = false;
-	//bool startPause = false;
 	bool gameOver = false;
 	int speed = 400;
 	const int DELAY = 1000;
-	//bool right, left, up, down, escape, quitPause;
 
 	//Inicialitzar mapa
 	map.ReadMap();
@@ -62,7 +58,6 @@ int main() {
 			break;
 
 		case GameState::MAIN_MENU:
-			//player.ReinitPlayer();
 			map.WriteMainMenu();
 			while (true) {
 				key.GetKeys(keyboard);
@@ -100,7 +95,7 @@ int main() {
 				std::cout << "*-*-INIT-*-*" << std::endl;
 				map.WriteMap(player.pos);
 				std::cout << "SCORE: " << player.score;
-				player.CalculateHealth(enemy.enemyList, enemy.enemyNumber, map.map);
+				player.CalculateHealth(enemy.enemyList, enemy.enemyNumber, map.map, map.maxPoints);
 				while (true) {
 					key.GetKeys(keyboard);
 					if (keyboard[static_cast<int>(InputKey::K_SPACE)]) {
@@ -115,7 +110,7 @@ int main() {
 				}
 
 			}
-			else if (player.lives < 1 || map.maxPoints == player.score) {
+			else if (player.lives < 1 || map.maxPoints - 1 == player.score) {
 				std::cout << "*-*-GAME OVER-*-*" << std::endl;
 				SetConsoleTextAttribute(consoleColor, 7);
 				std::cout << "Press escape to exit or space to see the ranking." << std::endl;
@@ -182,6 +177,7 @@ int main() {
 			//Input
 			key.GetKeys(keyboard);
 			player.MovePlayer(keyboard, map.map, map.totalColumns, map.totalRows);
+			player.ControlPowerUpState(start);
 
 			if (myGameState != GameState::GAME) {
 				SetConsoleTextAttribute(consoleColor, 7);
@@ -194,7 +190,7 @@ int main() {
 				map.ActualizeMap(player.pos, player.initialPos, player.character, enemy.enemyList, enemy.enemyNumber, player.hasPowerUp);
 				//Draw
 				std::cout << "SCORE: " << player.score;
-				player.CalculateHealth(enemy.enemyList, enemy.enemyNumber, map.map);
+				player.CalculateHealth(enemy.enemyList, enemy.enemyNumber, map.map, map.maxPoints);
 
 			}
 
