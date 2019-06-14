@@ -574,36 +574,40 @@ void Enemy::CheckTP(char ** map, int i, int columns, int rows)
 {
 	if (pos.x > columns - 1) {
 		map[enemyList[i].pos.x][enemyList[i].pos.y] = ' ';
+		map[enemyList[i].initialPos.x][enemyList[i].initialPos.y] = ' ';
 		if (map[0][enemyList[i].pos.y] != (char)219) {
 			enemyList[i].pos.x = 0;
-			if (enemyList[i].id == 0) initialPos.x = -1;
+			if (enemyList[i].id == 0) enemyList[i].initialPos.x = -1;
 		}
 		else enemyList[i].pos.x = columns - 1;
 
 	}
 	else if (enemyList[i].pos.x < 0) {
 		map[enemyList[i].pos.x][enemyList[i].pos.y] = ' ';
+		map[enemyList[i].initialPos.x][enemyList[i].initialPos.y] = ' ';
 		if (map[columns - 1][enemyList[i].pos.y] != (char)219) {
 			enemyList[i].pos.x = columns - 1;
-			if (enemyList[i].id == 0) initialPos.x = columns - 2;
+			if (enemyList[i].id == 0) enemyList[i].initialPos.x = columns;
 		}
 		else enemyList[i].pos.x = 0;
 
 	}
 	else if (enemyList[i].pos.y > rows - 1) {
 		map[enemyList[i].pos.x][enemyList[i].pos.y] = ' ';
+		map[enemyList[i].initialPos.x][enemyList[i].initialPos.y] = ' ';
 		if (map[enemyList[i].pos.x][0] != (char)219) {
 			enemyList[i].pos.y = 0;
-			if (enemyList[i].id == 0) initialPos.y = -1;
+			if (enemyList[i].id == 0) enemyList[i].initialPos.y = -1;
 		}
 		else enemyList[i].pos.y = rows - 1;
 
 	}
 	else if (enemyList[i].pos.y < 0) {
 		map[enemyList[i].pos.x][enemyList[i].pos.y] = ' ';
+		map[enemyList[i].initialPos.x][enemyList[i].initialPos.y] = ' ';
 		if (map[enemyList[i].pos.x][rows - 1] != (char)219) {
 			enemyList[i].pos.y = rows - 1;
-			if (enemyList[i].id == 0) initialPos.y = rows - 2;
+			if (enemyList[i].id == 0) enemyList[i].initialPos.y = rows;
 		}
 		else enemyList[i].pos.y = rows - 1;
 

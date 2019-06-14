@@ -1,15 +1,5 @@
 #include "Ranking.h"
 
-//
-//void Ranking::IncludePlayer(int score)
-//{
-//	std::string name;
-//	std::ofstream ranking("Ranking.txt");
-//	std::cin >> name;
-//	//playerMap[name] = { name, score };
-//
-//}
-
 std::string AskForName() {
 	std::string name;
 	std::cout << "Insert your name: ";
@@ -20,10 +10,9 @@ std::string AskForName() {
 
 bool Ranking::HasBeenPrinted(std::vector<std::string> namesVector, const std::string &name) {
 	//Mira si name ja esta dins el vector i, per tant, ja ha estat printat
-	for (std::vector<std::string>::iterator it = namesVector.begin(); it != namesVector.end(); it++) {
+	for (std::vector<std::string>::iterator it = namesVector.begin(); it != namesVector.end(); it++)
 		if (it->data() == name) return true;
 
-	}
 	return false;
 }
 

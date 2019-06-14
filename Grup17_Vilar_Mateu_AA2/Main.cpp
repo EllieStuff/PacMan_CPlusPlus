@@ -10,7 +10,6 @@
 enum class InputKey { K_ESC, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_PAUSE, K_SPACE, K_ZERO, K_ONE, K_TWO, COUNT};
 enum class GameState {SPLASH_SCREEN, MAIN_MENU, GAME, RANKING, EXIT};
 
-//TODO: 1. Ranking (llegir dades actuals), 2. PowerUps i 3. Revisar EnemyClasses.h i borrar-lo en casque doni masses problemes
 int main() {
 	srand(NULL(time));
 	time_t start = clock();
@@ -104,6 +103,12 @@ int main() {
 						SetConsoleTextAttribute(consoleColor, 224);
 						std::cout << "*-*-PLAY-*-*" << std::endl;
 						SetConsoleTextAttribute(consoleColor, 7);
+						break;
+
+					}
+					else if (keyboard[static_cast<int>(InputKey::K_ESC)]) {
+						myGameState = GameState::MAIN_MENU;
+						system("cls");
 						break;
 
 					}
